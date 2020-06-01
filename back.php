@@ -22,7 +22,7 @@
 		 $feedBack = false; // v případě, že DB server nevrátí žádný záznam - výstupní hodnota False
 	 }
 	 $dbConn->close();
-	 print_r ($ContentArray);
+	 return ($ContentArray);
 }
 
 function LoadListCompetition($year){
@@ -41,18 +41,38 @@ function LoadListCompetition($year){
  $result = $dbConn->query($sql); // odeslání SQL dotazu na DB server - $result obsahuje výsledek dotazu
  if ($result->num_rows > 0) { // kontrola zdali SQL dotaz SELECT vrátil článek
 			while($row = $result->fetch_assoc()) { // postupné procházení řádek výsledku - fetch_assoc() vrací pole hodnot jednoho řádku
-				$ContentArray[] = $row;
+				$ContentArray []= $row;
 			}
 	}
 	else {
 		$feedBack = false; // v případě, že DB server nevrátí žádný záznam - výstupní hodnota False
 	}
 	$dbConn->close();
-	print_r ($ContentArray);
+	return ($ContentArray);
 }
 
+function TableCreator($TableArray){
+	echo '<table>
+					<thead>
+						<th class=column1>PŘÍJMENÍ</th>
+						<th class=column2>JMÉNO</th>
+						<th class=column3>StolníTenis</th>
+						<th class=column4>Kulečník</th>
+						<th class=column5>Fotbálek</th>
+					</thead>';
+					foreach($TableArray as $Line) {
+						echo "<tr>";
+							echo ("<td class=column1>".$Line['PŘÍJMENÍ']."</td>");
+							echo ("<td class=column2>".$Line['JMÉNO']."</td>");
+							echo ("<td class=column3>".$Line['StolníTenis']."</td>");
+							echo ("<td class=column4>".$Line['Kulečník']."</td>");
+							echo ("<td class=column5>".$Line['Fotbálek']."</td>");
+						echo "</tr>";
+						}
+				echo '</table>';
+			}
 
-
-
-LoadListCompetition(2014);
+	if (isset($_GET["year"])) {
+		TableCreator(LoadListCompetition($_GET["year"]));
+	}
  ?>
